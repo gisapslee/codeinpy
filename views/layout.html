@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<title>{% block title %}CodeinPY{% endblock %}</title>
+
+		<meta name="description" content="Codifique em tempo real com seus amigos ou use como ferramenta de ensino.">
+		<meta property="og:description" content="Codifique em tempo real com seus amigos ou use como ferramenta de ensino.">
+		<meta property="og:title" content="CodeinPY - Editor de código em tempo real">
+		<meta property="og:site_name" content="CodeinPY">
+		<meta property="og:type" content="website">
+		<meta property="og:locale" content="pt_BR">
+
+		<link href="http://fonts.googleapis.com/css?family=Monda:400,700" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="/css/reset.css">
+		<link rel="stylesheet" href="/css/main.css">
+	</head>
+
+	<body>
+		{% block content %}{% endblock %}
+
+		{% block javascript %}
+			<script src="/socket.io/socket.io.js"></script>
+		{% endblock %}
+	</body>
+</html>

@@ -1,0 +1,117 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+{% parent %}
+ - Room: {{ room }}
+{% endblock %}
+
+{% block content %}
+
+	<div class="toolbar">
+            <a href="#" class="run-toggle" id="run" title="Aperte Ctrl+R para executar seu código"></a>
+            <a href="#" class="settings-toggle" title="Configure o seu ambiente"></a>
+                <a href="#" class="chat-toggle" title="Escreva aqui suas mensagens"></a>
+		<a href="#" class="users-toggle" title="Usuários online"><p></p></a>
+                <a href="#" class="share-toggle" title="Compartilhe essa URL com seu amigos"></a>
+		
+		<div class="settings">
+			<label>Temas</label>
+			<select name="theme">
+				<!--optgroup label="Bright">
+					<option value="chrome">Chrome</option><option value="clouds">Clouds</option><option value="crimson_editor">Crimson Editor</option><option value="dawn">Dawn</option><option value="dreamweaver">Dreamweaver</option><option value="eclipse">Eclipse</option><option value="github">GitHub</option><option value="solarized_light">Solarized Light</option><option value="textmate">TextMate</option><option value="tomorrow">Tomorrow</option><option value="xcode">XCode</option>
+				</optgroup-->
+				<optgroup label="Dark">
+					<option value="ambiance">Ambiance</option><option value="chaos">Chaos</option><option value="clouds_midnight">Clouds Midnight</option><option value="cobalt">Cobalt</option><option value="idle_fingers">idleFingers</option><option value="kr_theme">krTheme</option><option value="merbivore">Merbivore</option><option value="merbivore_soft">Merbivore Soft</option><option value="mono_industrial">Mono Industrial</option><option value="monokai">Monokai</option><option value="pastel_on_dark">Pastel on dark</option><option value="solarized_dark">Solarized Dark</option><option value="terminal">Terminal</option><option value="tomorrow_night">Tomorrow Night</option><option value="tomorrow_night_blue">Tomorrow Night Blue</option><option value="tomorrow_night_bright">Tomorrow Night Bright</option><option value="tomorrow_night_eighties">Tomorrow Night 80s</option><option value="twilight">Twilight</option><option value="vibrant_ink">Vibrant Ink</option>
+				</optgroup>
+			</select>
+
+			<label>Linguagem</label>
+			<select name="mode">
+				<option value="python" selected>Python</option>
+			</select>
+
+			<label>Nome</label>
+			<input type="text" name="username">
+		</div>
+
+		<div class="chat">
+			<div></div>
+			<textarea placeholder="Escreva algo e pressione a tecla Enter"></textarea>
+		</div>
+
+		<div class="users">
+			<div></div>
+		</div>
+
+		<div class="share">
+			<label>Compartilhe este link com seus amigos</label>
+			<input type="text" value="http://200.137.171.4:1337/{{ room }}">
+		</div>
+		
+	</div>
+	<div class="running">
+		<pre id="running"></pre>
+	</div>
+
+	<div class="message"></div>
+	
+	<div id="editor"></div>
+	<pre id="output"></pre> 
+
+	Conectando ao servidor...
+	
+{% endblock %}
+
+{% block javascript %}
+	{% parent %}
+
+	<script src="/js/lib/jquery.js"></script>
+	<script src="/js/lib/lab.js"></script>
+	<script src="/js/lib/skulpt-kw.js" type="text/javascript"></script>
+	<script src="/js/lib/ace/ace.js" type="text/javascript"></script>
+	<script src="/js/app/ace.js" text="text/javascript"></script>
+	<script src="/js/lib/cookie.js" text="text/javascript"></script>
+	<script src="/js/app/socket.js" type="text/javascript"></script>
+	<script src="/js/lib/storage.js" type="text/javascript"></script>
+	<script src="/js/app/editor.js" type="text/javascript"></script>
+	<script src="/js/app/pagetitle.js" type="text/javascript"></script>
+	<script src="/js/app/toolbar.js" type="text/javascript"></script>
+	<script src="/js/app/room.js" type="text/javascript"></script>
+	<script>
+	    var editor = ace.edit("editor");
+		function outf(text){
+			var output = document.getElementById("running");
+			text = text.replace(/</g, '&lt;');
+			output.innerHTML = output.innerHTML + text;
+		}
+		$('#run').click(function(){
+			var prog = editor.getValue();
+			var output = document.getElementById("running");
+			output.innerHTML = '>>>> ';
+			Sk.configure({output:outf});
+			try {
+				Sk.importMainWithBody("<stdin>", false, prog);
+			} catch (e) {
+				alert(e);
+			}
+		    return false;
+		});
+		
+		editor.commands.addCommand({
+			name: 'myCommand',
+			bindKey: {win: 'Ctrl-R',  mac: 'Command-R', lin: 'Ctrl-R'},
+			exec: function(editor) {
+				var prog = editor.getValue();
+				var output = document.getElementById("running");
+				output.innerHTML = '>>>> ';
+				Sk.configure({output:outf});
+				try {
+					Sk.importMainWithBody("<stdin>", false, prog);
+				} catch (e) {
+					alert(e);
+				}
+			},			
+			readOnly: true // false if this command should not apply in readOnly mode
+		});		
+	</script>
+{% endblock %}
