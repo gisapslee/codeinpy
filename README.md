@@ -1,5 +1,5 @@
 # codeinpy
 
-Licence
+Licença
 
-You're free to use, modify and distribute, partially or completely, in whatever way you seem fit. There's no limitation! However, a link to the original project would be appriciated.
+Você é livre para usar, modificar e distribuir, parcial ou totalmente, da maneira que pareça adequada. Não há limitação! No entanto, um link para o projeto original seria bacana.
